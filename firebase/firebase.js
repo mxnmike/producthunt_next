@@ -8,12 +8,6 @@ import {
   updateProfile,
 } from 'firebase/auth'
 import { getFirestore, collection, addDoc } from 'firebase/firestore'
-import {
-  getStorage,
-  ref,
-  getDownloadURL,
-  uploadBytesResumable,
-} from 'firebase/storage'
 
 import firebaseConfig from './config'
 
@@ -22,7 +16,7 @@ class Firebase {
     const app = initializeApp(firebaseConfig)
     this.db = getFirestore(app)
     this.auth = getAuth()
-    this.storage = getStorage(app)
+    // this.storage = getStorage(app)
   }
 
   //Section: - User Account
@@ -50,34 +44,34 @@ class Firebase {
     return await addDoc(collection(this.db, collectionName), object)
   }
 
-  async uploadFileImage(e) {
-    const file = e.target.files[0]
-    const imageRef = ref(this.storage, 'products' + file.name)
-    const uploadTask = uploadBytesResumable(imageRef, file)
-    uploadTask.on(
-      'state_changed',
-      snapshot => {
-        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-        console.log(`Uploading image: ${progress}% finished`)
-      },
-      //Error
-      error => {
-        throw (
-          ({
-            code: 404,
-            message: error,
-            error: true,
-          },
-          () => {
-            getDownloadURL(uploadTask.snapshot.ref).then(url => {
-              console.log('Image available at:', url)
-              return url
-            })
-          })
-        )
-      }
-    )
-  }
+  // async uploadFileImage(e) {
+  //   const file = e.target.files[0]
+  //   const imageRef = ref(this.storage, 'products' + file.name)
+  //   const uploadTask = uploadBytesResumable(imageRef, file)
+  //   uploadTask.on(
+  //     'state_changed',
+  //     snapshot => {
+  //       const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+  //       console.log(`Uploading image: ${progress}% finished`)
+  //     },
+  //     //Error
+  //     error => {
+  //       throw (
+  //         ({
+  //           code: 404,
+  //           message: error,
+  //           error: true,
+  //         },
+  //         () => {
+  //           getDownloadURL(uploadTask.snapshot.ref).then(url => {
+  //             console.log('Image available at:', url)
+  //             return url
+  //           })
+  //         })
+  //       )
+  //     }
+  //   )
+  // }
 }
 
 const firebase = new Firebase()

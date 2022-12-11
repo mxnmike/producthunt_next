@@ -1,15 +1,13 @@
 import React, { useState, useContext } from 'react'
 import { css } from '@emotion/react'
-import Router, { useRouter } from 'next/router'
+import { useRouter } from 'next/router'
 import Layout from '../components/Layouts/Layout'
 import { Form, Div, InputSubmit, Error } from '../components/ui/Form'
 import Spinner from '../components/ui/Spinner'
-
-import { FirebaseContext } from '../firebase'
+import useFirebase from '../hooks/useFirebase'
 
 import useValidacion from '../hooks/useValidacion'
 import validateCreateProduct from '../validation/createProductValidation'
-import { disableNetwork } from 'firebase/firestore'
 
 const STATE_INICIAL = {
   name: '',
@@ -36,12 +34,12 @@ const NewProduct = () => {
 
   const router = useRouter()
 
-  const { user, firebase } = useContext(FirebaseContext)
+  const { authUser, firebase } = useFirebase()
 
   async function createNewProduct() {
     setLoading(true)
     try {
-      if (!user) {
+      if (!authUser) {
         return router.push('/login')
       }
 
@@ -65,17 +63,17 @@ const NewProduct = () => {
     }
   }
 
-  const handleImageUpload = async e => {
-    setLoading(true)
-    try {
-      const urlImage = await firebase.handleImageUpload(e)
-      console.log('image available at:', urlImage)
-    } catch (error) {
-      setError(error.message)
-    } finally {
-      setLoading(false)
-    }
-  }
+  // const handleImageUpload = async e => {
+  //   setLoading(true)
+  //   try {
+  //     const urlImage = await firebase.handleImageUpload(e)
+  //     console.log('image available at:', urlImage)
+  //   } catch (error) {
+  //     setError(error.message)
+  //   } finally {
+  //     setLoading(false)
+  //   }
+  // }
 
   return (
     <div>
@@ -131,16 +129,16 @@ const NewProduct = () => {
 
                 {errores.company && <Error>{errores.company}</Error>}
 
-                <Div>
+                {/*<Div>
                   <label htmlFor='image'>Product Image</label>
                   <input
                     accept='image/*'
                     id='image'
                     type='file'
                     name='image'
-                    onChange={handleImageUpload}
+                    // onChange={handleImageUpload}
                   />
-                </Div>
+            </Div>*/}
 
                 {errores.image && <Error>{errores.image}</Error>}
 

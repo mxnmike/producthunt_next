@@ -7,6 +7,7 @@ import { Form, Div, InputSubmit, Error } from '../components/ui/Form'
 import firebase from '../firebase'
 
 import useValidacion from '../hooks/useValidacion'
+import useFirebase from '../hooks/useFirebase'
 import validateLogin from '../validation/loginValidation'
 
 const STATE_INICIAL = {
@@ -18,13 +19,14 @@ const Login = () => {
   const [error, setError] = useState(false)
 
   const { valores, errores, handleSubmit, handleChange, handleBlur } =
-    useValidacion(STATE_INICIAL, validateLogin, loginAccount)
+    useValidacion(STATE_INICIAL, validateLogin, handleLogin)
 
   const { email, password } = valores
+  const { loginAccount } = useFirebase()
 
-  async function loginAccount() {
+  async function handleLogin() {
     try {
-      await firebase.loginAccount(email, password)
+      await loginAccount(email, password)
       Router.push('/')
     } catch (error) {
       console.error('Error while login user:', error.message)

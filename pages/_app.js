@@ -1,14 +1,12 @@
 import App from 'next/app'
-import firebase, { FirebaseContext } from '../firebase'
-import useAuthentication from '../hooks/useAuthentication'
+import { FirebaseProvider } from '../firebase/FirebaseProvider'
 
 const MyApp = props => {
-  const user = useAuthentication()
   const { Component, pageProps } = props
   return (
-    <FirebaseContext.Provider value={{ firebase, user }}>
+    <FirebaseProvider>
       <Component {...pageProps} />
-    </FirebaseContext.Provider>
+    </FirebaseProvider>
   )
 }
 

@@ -6,7 +6,7 @@ import Router from 'next/router'
 import Navigation from './Navigation'
 import Search from '../ui/Search'
 import Button from '../ui/Button'
-import { FirebaseContext } from '../../firebase'
+import useFirebase from '../../hooks/useFirebase'
 
 const ContainerHeader = styled.div`
   max-width: 1200px;
@@ -28,7 +28,7 @@ const Logo = styled.p`
 `
 
 const Header = () => {
-  const { user, firebase } = useContext(FirebaseContext)
+  const { authUser } = useFirebase()
 
   return (
     <header
@@ -59,14 +59,14 @@ const Header = () => {
             align-items: center;
           `}
         >
-          {user ? (
+          {authUser ? (
             <>
               <p
                 css={css`
                   margin-right: 2rem;
                 `}
               >
-                Hello: {user.displayName}
+                Hello: {authUser.displayName}
               </p>
               <Button
                 bgColor='true'
