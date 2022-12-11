@@ -1,12 +1,13 @@
-import styled from '@emotion/styled'
 import Layout from '../components/Layouts/Layout'
 
-export default function Home() {
+const Search = () => {
   return (
     <div>
       <Layout>
-        <h1>Home</h1>
+        <h1>Search</h1>
       </Layout>
     </div>
   )
 }
+
+export default Search
